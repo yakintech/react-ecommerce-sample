@@ -1,6 +1,8 @@
-import { Table, Spin, Button, Modal } from 'antd';
+import { Table, Spin, Button } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react'
 import { baseService } from '../../../api/baseService';
+import confirm from 'antd/lib/modal/confirm';
 
 function CategoryList() {
 
@@ -14,12 +16,34 @@ function CategoryList() {
         getData();
     }, [])
 
-    const deleteCategory = (id) => {
-        baseService.delete("/categories", id)
-            .then(() => {
-                getData();
-            })
-    }
+    // const deleteCategory = (id) => {
+    //     baseService.delete("/categories", id)
+    //         .then(() => {
+    //             getData();
+    //         })
+    // }
+
+    const showDeleteConfirm = (id) => {
+        confirm({
+            title: 'Are you sure delete this category?',
+            icon: <ExclamationCircleOutlined />,
+            content: 'Some descriptions',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+
+            onOk() {
+                baseService.delete("/categories", id)
+                    .then(() => {
+                        getData();
+                    })
+            },
+
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
 
     const getData = () => {
         baseService.getAll("/categories")
@@ -47,7 +71,7 @@ function CategoryList() {
         {
             title: 'Delete',
             dataIndex: 'id',
-            render: (id) => (<Button onClick={() => deleteCategory(id)} danger>Delete</Button>)
+            render: (id) => (<Button onClick={() => showDeleteConfirm(id)} danger>Delete</Button>)
         }
     ]
 
@@ -56,7 +80,7 @@ function CategoryList() {
             <Table columns={columns} dataSource={categories} rowKey="id"></Table>
         </Spin>
     </>)
-    
+
 }
 
 
