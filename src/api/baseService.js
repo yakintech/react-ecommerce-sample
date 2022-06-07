@@ -35,13 +35,15 @@ export const baseService = {
 
         let response = {};
 
-        axios.delete(API_URL + url + "/" + id)
+       await axios.delete(API_URL + url + "/" + id)
             .then((res) => {
                 response = res.data;
             })
             .catch((err) => {
                 console.log('Error', err);
             })
+
+            return response
     },
     add: async (url, data) => {
 

@@ -16,13 +16,6 @@ function CategoryList() {
         getData();
     }, [])
 
-    // const deleteCategory = (id) => {
-    //     baseService.delete("/categories", id)
-    //         .then(() => {
-    //             getData();
-    //         })
-    // }
-
     const showDeleteConfirm = (id) => {
         confirm({
             title: 'Are you sure delete this category?',

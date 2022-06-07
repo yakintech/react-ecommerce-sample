@@ -5,7 +5,8 @@ import './index.css'
 import AdminHeader from './layout/AdminHeader'
 import CategoryList from './category/CategoryList';
 import AddCategory from './category/AddCategory';
-
+import Home from './home'
+import { Route, Routes } from 'react-router-dom';
 const { Content, Footer } = Layout;
 
 function Index() {
@@ -15,10 +16,19 @@ function Index() {
                 <AdminHeader></AdminHeader>
                 <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
-                        <AddCategory></AddCategory>
+                        <CategoryList></CategoryList>
                     </div>
                 </Content>
-            </Layout></>
+
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/admin/categories" element={<CategoryList />} />
+                    <Route path="/admin/addCategory" element={<AddCategory />} />
+
+                </Routes>
+
+            </Layout>
+            </>
     )
 }
 
