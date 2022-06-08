@@ -3,6 +3,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react'
 import { baseService } from '../../../api/baseService';
 import confirm from 'antd/lib/modal/confirm';
+import { useNavigate } from 'react-router-dom';
 
 function CategoryList() {
 
@@ -10,7 +11,7 @@ function CategoryList() {
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [visible, setVisible] = useState(false)
+    let navigate = useNavigate();
 
     useEffect(() => {
         getData();
@@ -46,6 +47,11 @@ function CategoryList() {
             })
     }
 
+    const goToUpdatePage = (id) => {
+        navigate("/admin/categories/update/" + id)
+    }
+
+
     const columns = [
         {
             title: 'Id',
@@ -65,7 +71,12 @@ function CategoryList() {
             title: 'Delete',
             dataIndex: 'id',
             render: (id) => (<Button onClick={() => showDeleteConfirm(id)} danger>Delete</Button>)
-        }
+        },
+        {
+          title: 'Update',
+          dataIndex: 'id',
+          render: (id) => (<Button onClick={() => goToUpdatePage(id)} type="primary" ghost>Update</Button>)
+        },
     ]
 
     return (<>

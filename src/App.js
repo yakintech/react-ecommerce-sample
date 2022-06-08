@@ -8,6 +8,7 @@ import { Content } from 'antd/lib/layout/layout';
 import AddCategory from './pages/admin/category/AddCategory';
 import ProductList from './pages/admin/product/ProductList';
 import AddProduct from './pages/admin/product/AddProduct';
+import UpdateCategory from './pages/admin/category/UpdateCategory';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/admin/categories" element={<CategoryList />} />
+              <Route path="/admin/categories/update/:id" element={<UpdateCategory />} />
               <Route path="/admin/addCategory" element={<AddCategory />} />
               <Route path="/admin/products" element={<ProductList />} />
               <Route path="/admin/addproduct" element={<AddProduct />} />
