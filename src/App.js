@@ -9,13 +9,17 @@ import AddCategory from './pages/admin/category/AddCategory';
 import ProductList from './pages/admin/product/ProductList';
 import AddProduct from './pages/admin/product/AddProduct';
 import UpdateCategory from './pages/admin/category/UpdateCategory';
+import Pricing from './pages/site/HomePage';
 
 
 function App() {
   return (
     <>
-      {/* <Admin></Admin> */}
+    
 
+    <Pricing></Pricing>
+
+{/* 
       <Layout>
         <AdminHeader></AdminHeader>
         <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
@@ -33,9 +37,7 @@ function App() {
           </div>
         </Content>
 
-
-
-      </Layout>
+      </Layout> */}
 
 
     </>
