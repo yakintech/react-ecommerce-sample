@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Form, Input, Button, Space } from 'antd';
 import { baseService } from '../../../api/baseService';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,14 +7,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 function UpdateCategory() {
 
     let { id } = useParams();
+
+    var formRef = useRef()
+
     const [category, setCategory] = useState([]);
-    const [updatedData, setUpdatedData] = useState(category);
     const navigate = useNavigate();
 
     const getCategory = () => {
         baseService.getById("/categories", id)
             .then((data) => {
                 setCategory(data);
+                formRef.current.setFieldsValue({name: data.name, description: data.description})
+                
             })
     }
 
@@ -27,13 +31,15 @@ function UpdateCategory() {
             name: category.name,
             description: category.description
         }
+
+        console.log(values);
         if (category.name && category.description) {
             baseService.update("/categories", id, values)
                 .then(() => {
                     navigate("/admin/categories");
                 }
                 )
-        } 
+        }
 
     }
 
@@ -43,6 +49,7 @@ function UpdateCategory() {
 
     return (<>
         <Form
+            ref={formRef}
             name="basic"
             labelCol={{
                 span: 8,
@@ -53,6 +60,8 @@ function UpdateCategory() {
             initialValues={{
                 remember: true,
             }}
+
+
         >
             <Form.Item
                 label="Name"
@@ -64,8 +73,8 @@ function UpdateCategory() {
                     },
                 ]}
             >
-                <Input defaultValue={updatedData.name} value={category.name} onChange={(e) => setCategory({ name: e.target.value, description: category.description })} />
-                {updatedData.name}
+                <Input />
+
             </Form.Item>
 
             <Form.Item
@@ -79,10 +88,9 @@ function UpdateCategory() {
                 ]}
 
             >
-                <Input defaultValue={updatedData.description} value={category.description} onChange={(e) => setCategory({ name: category.name, description: e.target.value })} />
-                {updatedData.description}
+                <Input />
+         
             </Form.Item>
-
 
 
             <Form.Item

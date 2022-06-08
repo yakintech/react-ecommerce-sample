@@ -17,9 +17,9 @@ function App() {
     <>
     
 
-    <Pricing></Pricing>
+    {/* <Pricing></Pricing> */}
 
-{/* 
+
       <Layout>
         <AdminHeader></AdminHeader>
         <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
@@ -37,7 +37,7 @@ function App() {
           </div>
         </Content>
 
-      </Layout> */}
+      </Layout>
 
 
     </>
