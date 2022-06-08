@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Space } from 'antd';
 import { baseService } from '../../../api/baseService';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 function UpdateCategory() {
 
     let { id } = useParams();
-    const [category, setCategory] = useState("")
+    const [category, setCategory] = useState([]);
+    const [updatedData, setUpdatedData] = useState(category);
+    const navigate = useNavigate();
 
     const getCategory = () => {
         baseService.getById("/categories", id)
@@ -17,9 +19,27 @@ function UpdateCategory() {
     }
 
     useEffect(() => {
-      getCategory();
+        getCategory();
     }, [])
-    
+
+    const updateCategory = () => {
+        let values = {
+            name: category.name,
+            description: category.description
+        }
+        if (category.name && category.description) {
+            baseService.update("/categories", id, values)
+                .then(() => {
+                    navigate("/admin/categories");
+                }
+                )
+        } 
+
+    }
+
+    const goToCategories = () => {
+        navigate("/admin/categories");
+    }
 
     return (<>
         <Form
@@ -44,7 +64,8 @@ function UpdateCategory() {
                     },
                 ]}
             >
-                <Input />
+                <Input defaultValue={updatedData.name} value={category.name} onChange={(e) => setCategory({ name: e.target.value, description: category.description })} />
+                {updatedData.name}
             </Form.Item>
 
             <Form.Item
@@ -56,8 +77,10 @@ function UpdateCategory() {
                         message: 'Please input category description!',
                     },
                 ]}
+
             >
-                <Input />
+                <Input defaultValue={updatedData.description} value={category.description} onChange={(e) => setCategory({ name: category.name, description: e.target.value })} />
+                {updatedData.description}
             </Form.Item>
 
 
@@ -68,9 +91,15 @@ function UpdateCategory() {
                     span: 16,
                 }}
             >
-                <Button type="primary" htmlType="submit">
-                    Update
-                </Button>
+                <Space>
+                    <Button onClick={goToCategories} type="danger" htmlType="submit">
+                        Cancel
+                    </Button>
+                    <Button onClick={updateCategory} type="primary" htmlType="submit">
+                        Update
+                    </Button>
+                </Space>
+
             </Form.Item>
         </Form></>
     )

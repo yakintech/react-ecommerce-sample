@@ -35,7 +35,7 @@ export const baseService = {
 
         let response = {};
 
-       await axios.delete(API_URL + url + "/" + id)
+        await axios.delete(API_URL + url + "/" + id)
             .then((res) => {
                 response = res.data;
             })
@@ -43,7 +43,7 @@ export const baseService = {
                 console.log('Error', err);
             })
 
-            return response
+        return response
     },
     add: async (url, data) => {
 
@@ -58,6 +58,20 @@ export const baseService = {
                 console.log('Error', err);
             })
 
+    },
+
+    update: async (url, id, data) => {
+
+        let response = {}
+        
+        await axios.put(API_URL + url + "/" + id, data)
+            .then((res) => {
+                response = res.data;
+                return response;
+            })
+            .catch((err) => {
+                console.log('Error', err);
+            })
     }
 
 }
