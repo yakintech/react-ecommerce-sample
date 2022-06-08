@@ -6,6 +6,7 @@ import AdminHeader from './pages/admin/layout/AdminHeader';
 import Home from './pages/admin/home'
 import { Content } from 'antd/lib/layout/layout';
 import AddCategory from './pages/admin/category/AddCategory';
+import ProductList from './pages/admin/product/ProductList';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/admin/categories" element={<CategoryList />} />
               <Route path="/admin/addCategory" element={<AddCategory />} />
+              <Route path="/admin/products" element={<ProductList />} />
             </Routes>
 
           </div>
