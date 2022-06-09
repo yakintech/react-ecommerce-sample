@@ -5,6 +5,7 @@ import { baseService } from '../../../api/baseService';
 import confirm from 'antd/lib/modal/confirm';
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from '@ant-design/icons';
+import {  useNavigate } from 'react-router-dom';
 
 function ProductList() {
 
@@ -13,6 +14,7 @@ function ProductList() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false)
+  let navigate = useNavigate();
 
   useEffect(() => {
     getData();
@@ -149,6 +151,11 @@ function ProductList() {
       })
   }
 
+  const goUpdateProduct = (id) =>{
+    navigate("/admin/products/update/" + id)
+    
+  }
+
   const columns = [
     {
       title: 'Name',
@@ -171,6 +178,11 @@ function ProductList() {
       title: 'Delete',
       dataIndex: 'id',
       render: (id) => (<Button onClick={() => showDeleteConfirm(id)} danger>Delete</Button>)
+    },
+    {
+      title: 'Update',
+      dataIndex: 'id',
+      render: (id) => (<Button onClick={() => goUpdateProduct(id)} type='primary' ghost>Update</Button>)
     }
   ]
 
