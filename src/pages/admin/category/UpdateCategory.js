@@ -10,15 +10,12 @@ function UpdateCategory() {
 
     var formRef = useRef()
 
-    const [category, setCategory] = useState([]);
     const navigate = useNavigate();
 
     const getCategory = () => {
         baseService.getById("/categories", id)
             .then((data) => {
-                setCategory(data);
-                formRef.current.setFieldsValue({name: data.name, description: data.description})
-                
+                formRef.current.setFieldsValue({ name: data.name, description: data.description })
             })
     }
 
@@ -26,14 +23,14 @@ function UpdateCategory() {
         getCategory();
     }, [])
 
-    const updateCategory = () => {
+    const updateCategory = (item) => {
         let values = {
-            name: category.name,
-            description: category.description
+            name: item.name,
+            description: item.description
         }
-
+        console.log(item);
         console.log(values);
-        if (category.name && category.description) {
+        if (item.name && item.description) {
             baseService.update("/categories", id, values)
                 .then(() => {
                     navigate("/admin/categories");
@@ -60,7 +57,7 @@ function UpdateCategory() {
             initialValues={{
                 remember: true,
             }}
-
+            onFinish={updateCategory}
 
         >
             <Form.Item
@@ -89,7 +86,7 @@ function UpdateCategory() {
 
             >
                 <Input />
-         
+
             </Form.Item>
 
 
@@ -103,7 +100,7 @@ function UpdateCategory() {
                     <Button onClick={goToCategories} type="danger" htmlType="submit">
                         Cancel
                     </Button>
-                    <Button onClick={updateCategory} type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit">
                         Update
                     </Button>
                 </Space>
