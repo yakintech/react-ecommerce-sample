@@ -63,24 +63,7 @@ const SupplierList = () => {
   };
 
   const handleOk = () => {
-    console.log("veri", inputValue);
-    const data = {
-      companyName: inputValue.companyName,
-      contactName: inputValue.contactName,
-      contactTitle: inputValue.contactTitle,
-      address: {
-        street: inputValue.address.street,
-        city: inputValue.address.city,
-        region: inputValue.address.region,
-        postalCode: inputValue.address.postalCode,
-        country: inputValue.address.country,
-        phone: inputValue.address.phone,
-      },
-    };
-    console.log(data);
-    baseService.put(`/suppliers/${inputValue.id}`, data).then(() => {
-      getData();
-    });
+   
 
     setConfirmLoading(true);
 
