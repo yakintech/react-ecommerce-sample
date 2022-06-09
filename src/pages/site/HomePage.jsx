@@ -16,6 +16,7 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
+import { baseService } from '../../api/baseService';
 
 function Copyright(props) {
     return (
@@ -30,47 +31,33 @@ function Copyright(props) {
     );
 }
 
-const tiers = [
-    {
-        title: 'Free',
-        price: '0',
-        description: [
-            '10 users included',
-            '2 GB of storage',
-            'Help center access',
-            'Email support',
-        ],
-        buttonText: 'Sign up for free',
-        buttonVariant: 'outlined',
-    },
-    {
-        title: 'Pro',
-        subheader: 'Most popular',
-        price: '15',
-        description: [
-            '20 users included',
-            '10 GB of storage',
-            'Help center access',
-            'Priority email support',
-        ],
-        buttonText: 'Get started',
-        buttonVariant: 'contained',
-    },
-    {
-        title: 'Enterprise',
-        price: '30',
-        description: [
-            '50 users included',
-            '30 GB of storage',
-            'Help center access',
-            'Phone & email support',
-        ],
-        buttonText: 'Contact us',
-        buttonVariant: 'outlined',
-    },
-];
+
+
 
 export default function Home() {
+    const [categories, setCategories] = React.useState([]);
+    const getData = () => {
+        baseService.getAll("/categories")
+            .then((data) => {
+                setCategories(data);
+            })
+    }
+    console.log('categories getdata', categories)
+    React.useEffect(() => {
+        getData();
+    }, [])
+    const tiers = categories && categories.map((item,key)=>{
+        return {
+            title: item.name,
+            id: item.id,
+            description: [
+                item.description,
+            ],
+            buttonText: item.name+' Details',
+            buttonVariant: 'outlined',
+        }
+    })
+    
     return (<>
         <>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -85,7 +72,7 @@ export default function Home() {
                     color="text.primary"
                     gutterBottom
                 >
-                    Pricing
+                    Categories
                 </Typography>
                 <Typography variant="h5" align="center" color="text.secondary" component="p">
                     Quickly build an effective pricing table for your potential customers with
@@ -98,12 +85,13 @@ export default function Home() {
                 <Grid container spacing={5} alignItems="flex-end">
                     {tiers.map((tier) => (
                       
-                        <Grid
+                        <Grid 
                             item
                             key={tier.title}
                             xs={12}
                             sm={tier.title === 'Enterprise' ? 12 : 6}
                             md={4}
+                            zeroMinWidth
                         >
                             <Card>
                                 <CardHeader
@@ -121,7 +109,7 @@ export default function Home() {
                                                 : theme.palette.grey[700],
                                     }}
                                 />
-                                <CardContent>
+                                <CardContent >
                                     <Box
                                         sx={{
                                             display: 'flex',
@@ -131,19 +119,20 @@ export default function Home() {
                                         }}
                                     >
                                         <Typography component="h2" variant="h3" color="text.primary">
-                                            ${tier.price}
+                                            Id:{tier.id}
                                         </Typography>
                                         <Typography variant="h6" color="text.secondary">
-                                            /mo
+                                            
                                         </Typography>
                                     </Box>
                                     <ul>
                                         {tier.description.map((line) => (
-                                            <Typography
+                                            <Typography 
                                                 component="li"
                                                 variant="subtitle1"
                                                 align="center"
                                                 key={line}
+                                                noWrap
                                             >
                                                 {line}
                                             </Typography>
@@ -152,7 +141,7 @@ export default function Home() {
                                 </CardContent>
                                 <CardActions>
                                     <Button fullWidth variant={tier.buttonVariant}>
-                                        {tier.buttonText}
+                                        {tier.buttonText} 
                                     </Button>
                                 </CardActions>
                             </Card>
