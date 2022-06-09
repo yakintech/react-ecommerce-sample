@@ -10,6 +10,7 @@ import ProductList from './pages/admin/product/ProductList';
 import AddProduct from './pages/admin/product/AddProduct';
 import UpdateCategory from './pages/admin/category/UpdateCategory';
 import Pricing from './pages/site/HomePage';
+import UpdateProduct from './pages/admin/product/UpdateProduct';
 import SupplierList from './pages/admin/supplier/SupplierList';
 import UpdateSupplier from './pages/admin/supplier/UpdateSupplier';
 
@@ -34,6 +35,7 @@ function App() {
               <Route path="/admin/addCategory" element={<AddCategory />} />
               <Route path="/admin/products" element={<ProductList />} />
               <Route path="/admin/addproduct" element={<AddProduct />} />
+              <Route path="/admin/products/update/:id" element={<UpdateProduct />} />
               <Route path="/admin/suppliers" element={<SupplierList />} />
               <Route path="/admin/suppliers/:id" element={<UpdateSupplier />} />
             </Routes>
