@@ -1,14 +1,12 @@
 import { Button, Form, Input, Space } from "antd";
-import { useForm } from "antd/lib/form/Form";
-import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { baseService } from "../../../api/baseService";
 
 function UpdateSupplier() {
   let { id } = useParams();
   var formRef = useRef();
- 
-  const [text, setText] = useState("deneme");
+  let navigate = useNavigate();
 
   useEffect(() => {
     getSupplierById();
@@ -16,27 +14,23 @@ function UpdateSupplier() {
 
   const getSupplierById = () => {
     baseService.getById(`/suppliers`, id).then((data) => {
-     
       formRef.current.setFieldsValue({
         companyName: data.companyName,
         contactName: data.contactName,
         contactTitle: data.contactTitle,
-       
-          street: data.address.street,
-          city: data.address.city,
-          region: data.address.region,
-          postalCode: data.address.postalCode,
-          country: data.address.country,
-          phone: data.address.phone,
-        
+
+        street: data.address.street,
+        city: data.address.city,
+        region: data.address.region,
+        postalCode: data.address.postalCode,
+        country: data.address.country,
+        phone: data.address.phone,
       });
       console.log(data.address.street);
     });
   };
 
   const updateSupplier = (suppliers) => {
-    
-
     let requestBody = {
       companyName: suppliers.companyName,
       contactName: suppliers.contactName,
@@ -50,9 +44,9 @@ function UpdateSupplier() {
         phone: suppliers.phone,
       },
     };
-console.log("gönderilecek data", requestBody);
-    baseService.update(`/suppliers`, id, requestBody).then((data) => {
-      console.log("updated");
+
+    baseService.update(`/suppliers`, id, requestBody).then(() => {
+      navigate("/admin/suppliers");
     });
   };
   return (
@@ -62,11 +56,7 @@ console.log("gönderilecek data", requestBody);
         autoComplete="off"
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 10 }}
-        //initialValues={{ fullName: suppliers.companyName }}
-        onFinish={(suppliers) => {
-          console.log("formsubmit verileri",suppliers);
-          updateSupplier(suppliers);
-        }}
+        onFinish={updateSupplier}
         onFinishFailed={(error) => {
           console.log({ error });
         }}
@@ -129,7 +119,7 @@ console.log("gönderilecek data", requestBody);
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your street" />
+          <Input.TextArea placeholder="Type your street" />
         </Form.Item>
         <Form.Item
           name="city"
@@ -174,7 +164,7 @@ console.log("gönderilecek data", requestBody);
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your postal code" />
+          <Input type="number" placeholder="Type your postal code" />
         </Form.Item>
         <Form.Item
           name="country"
@@ -212,7 +202,11 @@ console.log("gönderilecek data", requestBody);
             <Button block type="primary" htmlType="submit">
               Update
             </Button>
-            <Button block type="primary" htmlType="submit">
+            <Button
+              onClick={() => navigate("/admin/suppliers")}
+              block
+              htmlType="submit"
+            >
               Cancel
             </Button>
           </Space>

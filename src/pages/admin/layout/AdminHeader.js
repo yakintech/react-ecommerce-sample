@@ -26,7 +26,7 @@ function AdminHeader() {
           <Link to="/admin/suppliers">Supplier List</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/admin/orders">Order List</Link>
+          <Link to="/admin/addsupplier">Add Supplier</Link>
         </Menu.Item>
       </Menu>
     </Header>
