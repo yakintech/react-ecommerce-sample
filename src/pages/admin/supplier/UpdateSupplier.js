@@ -160,7 +160,7 @@ function UpdateSupplier() {
               message: "Please enter your postal code",
             },
             { whitespace: true },
-            { min: 3 },
+            { min: 4 },
           ]}
           hasFeedback
         >
