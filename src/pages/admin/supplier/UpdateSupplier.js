@@ -1,14 +1,12 @@
-import { Button, Form, Input } from "antd";
-import { useForm } from "antd/lib/form/Form";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Button, Form, Input, Space } from "antd";
+import React, { useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { baseService } from "../../../api/baseService";
 
 function UpdateSupplier() {
-  const [form] = Form.useForm();
   let { id } = useParams();
-  const [suppliers, setSuppliers] = useState([]);
-  const [text, setText] = useState("deneme");
+  var formRef = useRef();
+  let navigate = useNavigate();
 
   useEffect(() => {
     getSupplierById();
@@ -16,175 +14,204 @@ function UpdateSupplier() {
 
   const getSupplierById = () => {
     baseService.getById(`/suppliers`, id).then((data) => {
-      setSuppliers(data);
-      console.log(data);
+      formRef.current.setFieldsValue({
+        companyName: data.companyName,
+        contactName: data.contactName,
+        contactTitle: data.contactTitle,
+
+        street: data.address.street,
+        city: data.address.city,
+        region: data.address.region,
+        postalCode: data.address.postalCode,
+        country: data.address.country,
+        phone: data.address.phone,
+      });
+      console.log(data.address.street);
+    });
+  };
+
+  const updateSupplier = (suppliers) => {
+    let requestBody = {
+      companyName: suppliers.companyName,
+      contactName: suppliers.contactName,
+      contactTitle: suppliers.contactTitle,
+      address: {
+        street: suppliers.street,
+        city: suppliers.city,
+        region: suppliers.region,
+        postalCode: suppliers.postalCode,
+        country: suppliers.country,
+        phone: suppliers.phone,
+      },
+    };
+
+    baseService.update(`/suppliers`, id, requestBody).then(() => {
+      navigate("/admin/suppliers");
     });
   };
   return (
     <>
-        {
-            suppliers ?   <input value="var"></input>:
       <Form
-      form={form}
+        ref={formRef}
         autoComplete="off"
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 10 }}
-        initialValues={{ fullName: suppliers.companyName }}
-        onFinish={(values) => {
-          console.log({ values });
-        }}
+        onFinish={updateSupplier}
         onFinishFailed={(error) => {
           console.log({ error });
         }}
       >
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          name="companyName"
+          label="Company Name"
           rules={[
             {
               required: true,
-              message: "Please enter your name",
+              message: "Please enter your company name",
             },
             { whitespace: true },
             { min: 3 },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your name" />
+          <Input placeholder="Type your company name" />
         </Form.Item>
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          name="contactName"
+          label="Contact Name"
           rules={[
             {
               required: true,
-              message: "Please enter your name",
+              message: "Please enter your contact name",
             },
             { whitespace: true },
             { min: 3 },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your name" />
+          <Input placeholder="Type your contact name" />
         </Form.Item>
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          name="contactTitle"
+          label="Contact Title"
           rules={[
             {
               required: true,
-              message: "Please enter your name",
+              message: "Please enter contact title",
             },
             { whitespace: true },
             { min: 3 },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your name" />
+          <Input placeholder="Type your contact title" />
         </Form.Item>
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          name="street"
+          label="Street"
           rules={[
             {
               required: true,
-              message: "Please enter your name",
+              message: "Please enter your street",
             },
             { whitespace: true },
             { min: 3 },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your name" />
+          <Input.TextArea placeholder="Type your street" />
         </Form.Item>
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          name="city"
+          label="City"
           rules={[
             {
               required: true,
-              message: "Please enter your name",
+              message: "Please enter your city",
             },
             { whitespace: true },
             { min: 3 },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your name" />
+          <Input placeholder="Type your city" />
         </Form.Item>
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          name="region"
+          label="Region "
           rules={[
             {
               required: true,
-              message: "Please enter your name",
+              message: "Please enter your region",
             },
             { whitespace: true },
             { min: 3 },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your name" />
+          <Input placeholder="Type your region" />
         </Form.Item>
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          name="postalCode"
+          label="Postal Code"
           rules={[
             {
               required: true,
-              message: "Please enter your name",
+              message: "Please enter your postal code",
             },
             { whitespace: true },
-            { min: 3 },
+            { min: 4 },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your name" />
+          <Input type="number" placeholder="Type your postal code" />
         </Form.Item>
         <Form.Item
-          name="fullName"
-          label="Full Name"
+          name="country"
+          label="Country"
           rules={[
             {
               required: true,
-              message: "Please enter your name",
+              message: "Please enter your country",
             },
             { whitespace: true },
             { min: 3 },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your name" />
+          <Input placeholder="Type your country" />
         </Form.Item>
 
         <Form.Item
-          name="email"
-          label="Email"
+          name="phone"
+          label="Phone"
           rules={[
             {
               required: true,
-              message: "Please enter your email",
+              message: "Please enter your phone",
             },
-            { type: "email", message: "Please enter a valid email" },
+            { type: "phone", message: "Please enter a valid email" },
           ]}
           hasFeedback
         >
-          <Input placeholder="Type your email" />
+          <Input placeholder="Type your phone" />
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{ span: 2 }}
-          style={{ justifyContent: "center" }}
-        >
-          <Button block type="primary" htmlType="submit">
-            Register
-          </Button>
+        <Form.Item style={{ justifyContent: "center" }}>
+          <Space>
+            <Button block type="primary" htmlType="submit">
+              Update
+            </Button>
+            <Button
+              onClick={() => navigate("/admin/suppliers")}
+              block
+              htmlType="submit"
+            >
+              Cancel
+            </Button>
+          </Space>
         </Form.Item>
       </Form>
-        }
-
-      
     </>
   );
 }

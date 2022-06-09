@@ -1,6 +1,6 @@
 import { DownOutlined } from "@ant-design/icons";
 import { Form, Table, Button, Modal, Input } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
@@ -10,14 +10,13 @@ import { useNavigate } from "react-router-dom";
 
 const SupplierList = () => {
   //
+  const form = useRef(null);
+  let navigate = useNavigate();
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
 
-  const [inputValue, setInputValue] = useState([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
-
-  let navigate =useNavigate()
 
   useEffect(() => {
     getData();
@@ -34,7 +33,6 @@ const SupplierList = () => {
     confirm({
       title: "Are you sure delete this category?",
       icon: <ExclamationCircleOutlined />,
-      content: "Some descriptions",
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -50,51 +48,36 @@ const SupplierList = () => {
       },
     });
   };
-  const showModal = (id) => {
-    setVisible(true);
-    baseService.getById(`/suppliers`,id).then((data) => {
-      setInputValue(data);
-      console.log(data)
+
+  const getSelectedData = async (id) => {
+    baseService.getById(`/suppliers`, id).then((data) => {
+      form.current.setFieldsValue({
+        street: data.address.street,
+        city: data.address.city,
+        region: data.address.region,
+        postalCode: data.address.postalCode,
+        country: data.address.country,
+        phone: data.address.phone,
+      });
     });
   };
 
-  const onChangeInput = (e) => {
-    setInputValue({ ...inputValue, [e.target.name]: e.target.value });
+  const showModal = (id) => {
+    setVisible(true);
+    getSelectedData(id);
   };
 
   const handleOk = () => {
-    console.log("veri", inputValue);
-    const data = {
-      companyName: inputValue.companyName,
-      contactName: inputValue.contactName,
-      contactTitle: inputValue.contactTitle,
-      address: {
-        street: inputValue.address.street,
-        city: inputValue.address.city,
-        region: inputValue.address.region,
-        postalCode: inputValue.address.postalCode,
-        country: inputValue.address.country,
-        phone: inputValue.address.phone,
-      },
-    };
-    console.log(data);
-    baseService.put(`/suppliers/${inputValue.id}`, data).then(() => {
-      getData();
-    });
-
     setConfirmLoading(true);
 
     setTimeout(() => {
       setVisible(false);
       setConfirmLoading(false);
-    }, 2000);
-
-    setInputValue([]);
+    }, 1000);
   };
 
   const handleCancel = () => {
     setVisible(false);
-    setInputValue([]);
   };
 
   const columns = [
@@ -159,6 +142,7 @@ const SupplierList = () => {
         onCancel={handleCancel}
       >
         <Form
+          ref={form}
           labelCol={{
             span: 4,
           }}
@@ -167,69 +151,23 @@ const SupplierList = () => {
           }}
           layout="horizontal"
         >
-          <Form.Item label="Company">
-            <Input
-              name="companyName"
-              value={inputValue.companyName}
-              onChange={(e) => onChangeInput(e)}
-            />
+          <Form.Item name="street" label="Street">
+            <Input />
           </Form.Item>
-          <Form.Item label="Contact ">
-            <Input
-              name="contactName"
-              value={inputValue.contactName}
-              onChange={(e) => onChangeInput(e)}
-            />
+          <Form.Item name="city" label="City">
+            <Input />
           </Form.Item>
-
-          <Form.Item label="Tittle">
-            <Input
-              name="contactTitle"
-              value={inputValue.contactTitle}
-              onChange={(e) => onChangeInput(e)}
-            />
+          <Form.Item name="region" label="Region">
+            <Input />
           </Form.Item>
-          <Form.Item label="Street">
-            <Input
-              name="street"
-              value={inputValue.street}
-              onChange={(e) => onChangeInput(e)}
-            />
+          <Form.Item name="postalCode" label="PostalCode">
+            <Input />
           </Form.Item>
-          <Form.Item label="City">
-            <Input
-              name="city"
-              // value={inputValue.address.city}
-              onChange={(e) => onChangeInput(e)}
-            />
+          <Form.Item name="country" label="Country">
+            <Input />
           </Form.Item>
-          <Form.Item label="Region">
-            <Input
-              name="region"
-              // value={inputValue.address.region}
-              onChange={(e) => onChangeInput(e)}
-            />
-          </Form.Item>
-          <Form.Item label="PostalCode">
-            <Input
-              name="postalCode"
-              // value={inputValue.address.postalCode}
-              onChange={(e) => onChangeInput(e)}
-            />
-          </Form.Item>
-          <Form.Item label="Country">
-            <Input
-              name="country"
-              // value={inputValue.address.country}
-              onChange={(e) => onChangeInput(e)}
-            />
-          </Form.Item>
-          <Form.Item label="Phone">
-            <Input
-              name="phone"
-              // value={inputValue.address.phone}
-              onChange={(e) => onChangeInput(e)}
-            />
+          <Form.Item name="phone" label="Phone">
+            <Input />
           </Form.Item>
         </Form>
       </Modal>
