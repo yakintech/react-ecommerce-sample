@@ -13,6 +13,7 @@ import Pricing from './pages/site/HomePage';
 import UpdateProduct from './pages/admin/product/UpdateProduct';
 import SupplierList from './pages/admin/supplier/SupplierList';
 import UpdateSupplier from './pages/admin/supplier/UpdateSupplier';
+import Orders from './pages/admin/order/Orders';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
               <Route path="/admin/products/update/:id" element={<UpdateProduct />} />
               <Route path="/admin/suppliers" element={<SupplierList />} />
               <Route path="/admin/suppliers/:id" element={<UpdateSupplier />} />
+              <Route path="/admin/orders" element={<Orders />} />
             </Routes>
 
           </div>
