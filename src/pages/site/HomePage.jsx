@@ -17,6 +17,7 @@ import Container from '@mui/material/Container';
 import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
 import { baseService } from '../../api/baseService';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
     return (
@@ -42,28 +43,30 @@ export default function Home() {
                 setCategories(data);
             })
     }
+
+    let navigate = useNavigate()
+
+    const detail = (id) => {
+        navigate(id + "/products")
+    }
+
     console.log('categories getdata', categories)
     React.useEffect(() => {
         getData();
     }, [])
-    const tiers = categories && categories.map((item,key)=>{
+    const tiers = categories && categories.map((item, key) => {
         return {
             title: item.name,
             id: item.id,
             description: [
                 item.description,
             ],
-            buttonText: item.name+' Details',
+            buttonText: item.name + ' Details',
             buttonVariant: 'outlined',
         }
     })
-    
+
     return (<>
-        <>
-            <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
-            <CssBaseline />
-            <SiteHeader></SiteHeader>
-            {/* Hero unit */}
             <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
                 <Typography
                     component="h1"
@@ -84,8 +87,8 @@ export default function Home() {
             <Container maxWidth="md" component="main">
                 <Grid container spacing={5} alignItems="flex-end">
                     {tiers.map((tier) => (
-                      
-                        <Grid 
+
+                        <Grid
                             item
                             key={tier.title}
                             xs={12}
@@ -103,6 +106,7 @@ export default function Home() {
                                         align: 'center',
                                     }}
                                     sx={{
+                                        height:75,
                                         backgroundColor: (theme) =>
                                             theme.palette.mode === 'light'
                                                 ? theme.palette.grey[200]
@@ -122,12 +126,12 @@ export default function Home() {
                                             Id:{tier.id}
                                         </Typography>
                                         <Typography variant="h6" color="text.secondary">
-                                            
+
                                         </Typography>
                                     </Box>
                                     <ul>
                                         {tier.description.map((line) => (
-                                            <Typography 
+                                            <Typography
                                                 component="li"
                                                 variant="subtitle1"
                                                 align="center"
@@ -140,8 +144,8 @@ export default function Home() {
                                     </ul>
                                 </CardContent>
                                 <CardActions>
-                                    <Button fullWidth variant={tier.buttonVariant}>
-                                        {tier.buttonText} 
+                                    <Button fullWidth variant={tier.buttonVariant} onClick={() => detail(tier.id)}>
+                                        {tier.buttonText}
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -149,7 +153,5 @@ export default function Home() {
                     ))}
                 </Grid>
             </Container>
-            <SiteFooter></SiteFooter>
-        </>
     </>);
 }

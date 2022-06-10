@@ -17,7 +17,7 @@ function AdminHeader() {
           <Link to="/admin/addcategory">Add Category</Link>
         </Menu.Item>
         <Menu.Item>
-          <Link to="/admin/products">Product List</Link>
+          <Link to="/admin/productlist">Product List</Link>
         </Menu.Item>
         <Menu.Item>
           <Link to="/admin/addproduct">Add Product</Link>
