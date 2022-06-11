@@ -47,7 +47,7 @@ export default function Home() {
     let navigate = useNavigate()
 
     const detail = (id) => {
-        navigate(id + "/products")
+        navigate(`/category/${id}`)
     }
 
     console.log('categories getdata', categories)
