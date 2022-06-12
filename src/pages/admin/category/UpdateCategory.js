@@ -21,7 +21,7 @@ function UpdateCategory() {
 
     useEffect(() => {
         getCategory();
-    }, [])
+    }, []);
 
     const updateCategory = (item) => {
         let values = {
