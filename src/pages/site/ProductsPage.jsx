@@ -6,12 +6,9 @@ import {
   CardContent,
   CardHeader,
   Container,
-  CssBaseline,
-  GlobalStyles,
   Grid,
   Typography,
 } from "@mui/material";
-import StarIcon from "@mui/icons-material/StarBorder";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -53,7 +50,7 @@ function ProductsPage() {
         title: item.name,
         id: item.id,
         price: item.unitPrice.toFixed(2),
-        description: [item.description],
+        stock: item.unitsInStock,
         buttonText: " Detail",
         buttonVariant: "outlined",
       };
@@ -61,7 +58,6 @@ function ProductsPage() {
 
   return (
     <>
-      {/* Hero unit */}
       <Container
         disableGutters
         maxWidth="sm"
@@ -86,7 +82,7 @@ function ProductsPage() {
           {category.description}
         </Typography>
       </Container>
-      {/* End hero unit */}
+
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
           {tiers.map((tier,key) => (
@@ -101,9 +97,7 @@ function ProductsPage() {
               <Card>
                 <CardHeader
                   title={tier.title}
-                  subheader={tier.subheader}
                   titleTypographyProps={{ align: "center" }}
-                  action={tier.title === "Pro" ? <StarIcon /> : null}
                   subheaderTypographyProps={{
                     align: "center",
                   }}
@@ -119,37 +113,28 @@ function ProductsPage() {
                   <Box
                     sx={{
                       display: "flex",
+                      flexDirection: 'column',
                       justifyContent: "center",
-                      alignItems: "baseline",
-                      mb: 2,
+                      alignItems: "center",
+                      mb: 1,
+                      mt: 1,
                     }}
                   >
                     <Typography
                       component="h2"
-                      variant="h3"
+                      variant="h4"
                       color="text.primary"
                     >
-                      ${tier.price}
+                      <b>${tier.price}</b>
                     </Typography>
                     <Typography
-                      variant="h6"
-                      color="text.secondary"
-                    ></Typography>
+                      component="h2"
+                      variant="h5"
+                      color="text.primary"
+                    >
+                      Stock: {tier.stock}
+                    </Typography>
                   </Box>
-                  <ul>
-                    {tier.description.map((line ,key) => (
-                      <Typography
-                     
-                        component="li"
-                        variant="subtitle1"
-                        align="center"
-                        key={key}
-                        noWrap
-                      >
-                        {line}
-                      </Typography>
-                    ))}
-                  </ul>
                 </CardContent>
                 <CardActions>
                   <Button
