@@ -1,5 +1,5 @@
-import { DownOutlined } from "@ant-design/icons";
-import { Form, Table, Button, Modal, Input } from "antd";
+
+import { Form, Table, Button, Modal, Input ,Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 
 import { ExclamationCircleOutlined } from "@ant-design/icons";
@@ -7,6 +7,7 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import confirm from "antd/lib/modal/confirm";
 import { baseService } from "../../../api/baseService";
 import { useNavigate } from "react-router-dom";
+import { SearchOutlined } from "@mui/icons-material";
 
 const SupplierList = () => {
   //
@@ -85,6 +86,62 @@ const SupplierList = () => {
       title: "Company Name",
       dataIndex: "companyName",
       sorter: (a, b) => a.companyName.localeCompare(b.companyName),
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <div style={{boxSizing:"border-box",padding:5}}>
+            <Input
+              autoFocus
+              placeholder="Type text here"
+              value={selectedKeys[0]}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+              onPressEnter={() => {
+                confirm();
+              }}
+            ></Input>
+            <Space
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                margin:5
+              }}
+            >
+              <Button
+                onClick={() => {
+                  confirm();
+                }}
+                type="primary"
+                
+                
+              >
+                Search
+              </Button>
+              <Button
+                onClick={() => {
+                  clearFilters();
+                }}
+                type="link "
+              >
+                Reset
+              </Button>
+            </Space>
+          </div>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.companyName.toLowerCase().includes(value.toLowerCase());
+      },
     },
     {
       title: "Contact Name",
