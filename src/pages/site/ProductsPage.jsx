@@ -31,10 +31,13 @@ function ProductsPage() {
   };
 
   const getCategory = async () => {
-    await baseService.getById("/categories", id).then((data) => {
+    if(id){
+      await baseService.getById("/categories", id).then((data) => {
       setCategory(data);
       console.log("CATEGORY", category);
     });
+    }
+    
   };
 
   useEffect(() => {
@@ -64,28 +67,42 @@ function ProductsPage() {
         component="main"
         sx={{ pt: 8, pb: 6 }}
       >
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="text.primary"
-          gutterBottom
-        >
-          {category.name}
-        </Typography>
-        <Typography
-          variant="h5"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          {category.description}
-        </Typography>
+        {id ? (
+          <>
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              color="text.primary"
+              gutterBottom
+            >
+              {category.name}
+            </Typography>
+            <Typography
+              variant="h5"
+              align="center"
+              color="text.secondary"
+              component="p"
+            >
+              {category.description}
+            </Typography>
+          </>
+        ) : (
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            All Products
+          </Typography>
+        )}
       </Container>
 
       <Container maxWidth="md" component="main">
         <Grid container spacing={5} alignItems="flex-end">
-          {tiers.map((tier,key) => (
+          {tiers.map((tier, key) => (
             <Grid
               item
               key={key}
