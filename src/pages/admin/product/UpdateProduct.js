@@ -1,21 +1,20 @@
-////////////////////////////////////////////
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Form, Input, Button, Space } from 'antd';
 import { baseService } from '../../../api/baseService';
 import { useNavigate, useParams } from 'react-router-dom';
+import { integerPropType } from '@mui/utils';
 
 
 function UpdateProduct() {
 
     let { id } = useParams();
-    const [product, setProduct] = useState([]);
-    const [updatedData, setUpdatedData] = useState(product);
+    var formRef = useRef()
     const navigate = useNavigate();
 
     const getProduct = () => {
         baseService.getById("/products", id)
             .then((data) => {
-                setProduct(data);
+                formRef.current.setFieldsValue({ name: data.name, unitPrice: data.unitPrice, unitsInStock: data.unitsInStock })
             })
     }
 
@@ -23,13 +22,15 @@ function UpdateProduct() {
         getProduct();
     }, [])
 
-    const updateProduct = () => {
+    const updateProduct = (item) => {
         let values = {
-            name: product.name,
-            unitPrice: product.unitPrice,
-            unitsInStock: product.unitsInStock
+            name: item.name,
+            unitPrice: item.unitPrice,
+            unitsInStock: item.unitsInStock
         }
-        if (product.name && product.unitPrice && product.unitsInStock) {
+        console.log(item);
+        console.log(values);
+        if (item.name && item.unitPrice && item.unitsInStock) {
             baseService.update("/products", id, values)
                 .then(() => {
                     navigate("/admin/products");
@@ -45,6 +46,7 @@ function UpdateProduct() {
 
     return (<>
         <Form
+            ref={formRef}
             name="basic"
             labelCol={{
                 span: 8,
@@ -55,6 +57,7 @@ function UpdateProduct() {
             initialValues={{
                 remember: true,
             }}
+            onFinish={updateProduct}
         >
             <Form.Item
                 label="Name"
@@ -66,8 +69,7 @@ function UpdateProduct() {
                     },
                 ]}
             >
-                <Input defaultValue={updatedData.name} value={product.name} onChange={(e) => setProduct({ name: e.target.value, unitPrice: product.unitPrice , unitsInStock: product.unitsInStock})} />
-                {updatedData.name}
+                <Input />
             </Form.Item>
 
             <Form.Item
@@ -81,8 +83,7 @@ function UpdateProduct() {
                 ]}
 
             >
-                <Input defaultValue={updatedData.unitPrice} value={product.unitPrice} onChange={(e) => setProduct({ name: product.name, unitPrice: e.target.value, unitsInStock: product.unitsInStock })} />
-                {updatedData.unitPrice}
+                <Input />
             </Form.Item>
 
             <Form.Item
@@ -96,8 +97,7 @@ function UpdateProduct() {
                 ]}
 
             >
-                <Input defaultValue={updatedData.unitsInStock} value={product.unitsInStock} onChange={(e) => setProduct({ name: product.name, unitPrice: product.unitPrice, unitsInStock: e.target.value })} />
-                {updatedData.unitsInStock}
+                <Input />
             </Form.Item>
 
 
@@ -112,7 +112,7 @@ function UpdateProduct() {
                     <Button onClick={goToProducts} type="danger" htmlType="submit">
                         Cancel
                     </Button>
-                    <Button onClick={updateProduct} type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit">
                         Update
                     </Button>
                 </Space>

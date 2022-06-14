@@ -35,7 +35,7 @@ function AdminRoute() {
                             element={<UpdateCategory />}
                         />
                         <Route path="/addCategory" element={<AddCategory />} />
-                        <Route path="/productlist" element={<ProductList />} />
+                        <Route path="/products" element={<ProductList />} />
                         <Route path="/addproduct" element={<AddProduct />} />
                         <Route
                             path="/products/update/:id"
