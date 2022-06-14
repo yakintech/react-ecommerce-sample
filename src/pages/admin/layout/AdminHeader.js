@@ -6,7 +6,7 @@ const { Header } = Layout;
 
 function AdminHeader() {
   return (
-    <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
+    <Header style={{ position: "fixed", zIndex: 2, width: "100%" }}>
       <div className="logo" />
 
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
