@@ -19,6 +19,7 @@ import SiteFooter from './layout/SiteFooter';
 import { baseService } from '../../api/baseService';
 import { useNavigate } from 'react-router-dom';
 import { CardMedia } from '@mui/material';
+import "./index.css"
 
 function Copyright(props) {
     return (
@@ -88,95 +89,112 @@ export default function Home() {
         }
     })
 
-    return (<>
-        <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
-            <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="text.primary"
-                gutterBottom
-            >
-                Categories
-            </Typography>
-            <Typography variant="h5" align="center" color="text.secondary" component="p">
-                Quickly build an effective pricing table for your potential customers with
-                this layout. It&apos;s built with default MUI components with little
-                customization.
-            </Typography>
+    return (
+      <>
+        <Container
+          disableGutters
+          maxWidth="sm"
+          component="main"
+          sx={{ pt: 8, pb: 6 }}
+        >
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            Categories
+          </Typography>
+          <Typography
+            variant="h5"
+            align="center"
+            color="text.secondary"
+            component="p"
+          >
+            Quickly build an effective pricing table for your potential
+            customers with this layout. It&apos;s built with default MUI
+            components with little customization.
+          </Typography>
         </Container>
         {/* End hero unit */}
         <Container maxWidth="md" component="main">
-            <Grid container spacing={5} alignItems="flex-end">
-                {tiers.map((tier) => (
-
-                    <Grid
-                        item
-                        key={tier.title}
-                        xs={12}
-                        sm={tier.title === 'Enterprise' ? 12 : 6}
-                        md={4}
-                        zeroMinWidth
+          <Grid container spacing={5} alignItems="flex-end">
+            {tiers.map((tier) => (
+              <Grid
+                item
+                key={tier.title}
+                xs={12}
+                sm={tier.title === "Enterprise" ? 12 : 6}
+                md={4}
+                zeroMinWidth
+              >
+                <Card className="card">
+                  <CardHeader
+                    title={tier.title}
+                    subheader={tier.subheader}
+                    titleTypographyProps={{ align: "center" }}
+                    action={tier.title === "Pro" ? <StarIcon /> : null}
+                    subheaderTypographyProps={{
+                      align: "center",
+                    }}
+                    sx={{
+                      height: 75,
+                      backgroundColor: (theme) =>
+                        theme.palette.mode === "light"
+                          ? theme.palette.grey[200]
+                          : theme.palette.grey[700],
+                    }}
+                  />
+                  <CardMedia
+                    className="cardimg"
+                    component="img"
+                    height="194"
+                    image={tier.src}
+                    alt="Random Image"
+                  />
+                  <CardContent>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "baseline",
+                        mb: 0,
+                      }}
                     >
-                        <Card>
-                            <CardHeader
-                                title={tier.title}
-                                subheader={tier.subheader}
-                                titleTypographyProps={{ align: 'center' }}
-                                action={tier.title === 'Pro' ? <StarIcon /> : null}
-                                subheaderTypographyProps={{
-                                    align: 'center',
-                                }}
-                                sx={{
-                                    height: 75,
-                                    backgroundColor: (theme) =>
-                                        theme.palette.mode === 'light'
-                                            ? theme.palette.grey[200]
-                                            : theme.palette.grey[700],
-                                }}
-                            />
-                            <CardMedia
-                                component="img"
-                                height="194"
-                                image={tier.src}
-                                alt="Random Image"
-                            />
-                            <CardContent >
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'baseline',
-                                        mb: 0,
-                                    }}
-                                >
-                                    <Typography variant="h6" color="text.secondary">
-
-                                    </Typography>
-                                </Box>
-                                <ul>
-                                    {tier.description.map((line) => (
-                                        <Typography
-                                            component="li"
-                                            variant="subtitle1"
-                                            align="center"
-                                            key={line}
-                                            noWrap
-                                        >
-                                            {line}
-                                        </Typography>
-                                    ))}
-                                </ul>
-                            </CardContent>
-                            <CardActions>
-                                <Button fullWidth variant={tier.buttonVariant} onClick={() => detail(tier.title, tier.id)}>
-                                    {tier.buttonText}
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
+                      <Typography
+                        variant="h6"
+                        color="text.secondary"
+                      ></Typography>
+                    </Box>
+                    <ul>
+                      {tier.description.map((line) => (
+                        <Typography
+                          component="li"
+                          variant="subtitle1"
+                          align="center"
+                          key={line}
+                          noWrap
+                        >
+                          {line}
+                        </Typography>
+                      ))}
+                    </ul>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      fullWidth
+                      variant={tier.buttonVariant}
+                      onClick={() => detail(tier.title, tier.id)}
+                    >
+                      {tier.buttonText}
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Container>
-    </>);
+      </>
+    );
 }
