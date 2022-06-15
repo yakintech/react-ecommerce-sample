@@ -5,7 +5,7 @@ function SiteHeader() {
   return (
     <>
         <AppBar
-        position="static"
+        position="sticky"
         color="default"
         elevation={0}
         sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}

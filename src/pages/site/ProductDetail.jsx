@@ -1,8 +1,6 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Typography, Container, CircularProgress } from '@mui/material'
-import StarIcon from '@mui/icons-material/StarBorder';
+import { Box, Button, Card, CardActions, CardContent, Typography, CircularProgress, CardMedia } from '@mui/material'
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { baseService } from '../../api/baseService';
 
 function ProductDetail() {
@@ -11,7 +9,8 @@ function ProductDetail() {
     const [supplier, setSupplier] = useState("");
     const [loading, setLoading] = useState(true);
 
-    const { id } = useParams();
+    const id = window.sessionStorage.getItem("product");
+
 
     const getProduct = async () => {
         await baseService.getById("/products", id)
@@ -51,35 +50,26 @@ function ProductDetail() {
                     <CircularProgress />
                 </Box>
 
-                : <Container
-                    disableGutters
-                    maxWidth="sm"
-                    component="main"
-                    sx={{ pt: 8, pb: 6 }}
-                >
-                    <Card
-                        sx={{
-                            width: 500,
-                            margin: 'auto',
-                        }}
-                    >
-                        <CardHeader
-                            title={product.name}
-                            titleTypographyProps={{ align: 'center' }}
-                            action={product.title === 'Pro' ? <StarIcon /> : null}
-                            subheaderTypographyProps={{
-                                align: 'center',
-                            }}
+                :
+                <Box sx={{ display: 'flex', justifyContent: 'center', mt: "3rem" }}>
+                    <Card sx={{ display: 'flex', justifyContent: 'center', mt: "1rem", p: "3rem"}}>
+                        <Card
                             sx={{
-                                height: 100,
-                                backgroundColor: (theme) =>
-                                    theme.palette.mode === 'light'
-                                        ? theme.palette.grey[200]
-                                        : theme.palette.grey[700],
-
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'baseline',
+                                p:"1rem"
                             }}
-                        />
-
+                        >
+                            <CardMedia
+                                component="img"
+                                height="400"
+                                width="400"
+                                image="https://picsum.photos/200/200?random=1"
+                                alt="Random Image"
+                            />
+                        </Card>
                         <CardContent >
                             <Box
                                 sx={{
@@ -87,34 +77,41 @@ function ProductDetail() {
                                     flexDirection: 'column',
                                     justifyContent: 'center',
                                     alignItems: 'baseline',
-                                    mb: 2,
+                                    ml: "1rem",
                                 }}
                             >
-                                <Typography component="h4" variant="h5" color="text.primary">
-                                    Price: ${product.unitPrice}
+                                <Typography component="h4" variant="h6" color="text.primary">
+                                    {product.name}
                                 </Typography>
-                                <Typography component="h4" variant="h5" color="text.primary">
+                                <Typography component="h4" variant="p" color="text.primary">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br></br>Suspendisse quis mi elit. 
+                                Donec interdum et mi at elementum. 
+                                </Typography>
+                                <Typography component="h4" variant="h4" color="text.primary">
+                                    <b>${product.unitPrice}</b>
+                                </Typography>
+                                <Typography component="h4" variant="p" color="text.primary">
                                     Stock: {product.unitsInStock}
                                 </Typography>
-                                <Typography component="h4" variant="h5" color="text.primary">
+                                <Typography component="h4" variant="p" color="text.primary">
                                     Quantity: {product.quantityPerUnit}
                                 </Typography>
-                                <Typography component="h4" variant="h5" color="text.primary">
+                                <Typography component="h4" variant="p" color="text.primary">
                                     Company: {supplier.companyName}
                                 </Typography>
                             </Box>
+                            <CardActions sx={{display:"flex", justifyContent: "center", mt:"2rem"}}>
+                                <Button variant='outlined'>
+                                    Add to Cart
+                                </Button>
+                            </CardActions>
                         </CardContent>
+                        </Card>
+                    </Box>               
 
-                        <CardActions>
-                            <Button fullWidth variant='outlined'>
-                                Add
-                            </Button>
-                        </CardActions>
-
-                    </Card>
-                </Container>
         }
-    </>)
+
+                </>)
 }
 
-export default ProductDetail
+        export default ProductDetail

@@ -33,6 +33,24 @@ function Copyright(props) {
     );
 }
 
+function stringToSlug (str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+  
+    // remove accents, swap ñ for n, etc
+    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to   = "aaaaeeeeiiiioooouuuunc------";
+    for (var i=0, l=from.length ; i<l ; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+    return str;
+}
+
 
 
 
@@ -47,8 +65,10 @@ export default function Home() {
 
     let navigate = useNavigate()
 
-    const detail = (id) => {
-        navigate(`/category/${id}`)
+    const detail = (name, id) => {
+        name = stringToSlug(name);
+        navigate(`/category/${name}`)
+        window.sessionStorage.setItem("category", id)
     }
 
     console.log('categories getdata', categories)
@@ -149,7 +169,7 @@ export default function Home() {
                                 </ul>
                             </CardContent>
                             <CardActions>
-                                <Button fullWidth variant={tier.buttonVariant} onClick={() => detail(tier.id)}>
+                                <Button fullWidth variant={tier.buttonVariant} onClick={() => detail(tier.title, tier.id)}>
                                     {tier.buttonText}
                                 </Button>
                             </CardActions>

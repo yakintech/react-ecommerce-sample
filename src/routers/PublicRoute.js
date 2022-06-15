@@ -14,8 +14,8 @@ function PublicRoute() {
         <SiteHeader></SiteHeader>
         <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/category/:id" element={<ProductsPage />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/category/:name" element={<ProductsPage />} />
+            <Route path="/product/:name" element={<ProductDetail />} />
         </Routes>
         <SiteFooter></SiteFooter>
     </>)
