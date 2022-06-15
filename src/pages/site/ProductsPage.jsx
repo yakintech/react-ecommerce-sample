@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import Link from '@mui/material/Link'
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { baseService } from "../../api/baseService";
@@ -22,23 +22,23 @@ function ProductsPage() {
 
   const navigate = useNavigate();
 
-  function stringToSlug (str) {
+  function stringToSlug(str) {
     str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
-  
+
     // remove accents, swap ñ for n, etc
     var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to   = "aaaaeeeeiiiioooouuuunc------";
-    for (var i=0, l=from.length ; i<l ; i++) {
-        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    var to = "aaaaeeeeiiiioooouuuunc------";
+    for (var i = 0, l = from.length; i < l; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
 
     str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-        .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-'); // collapse dashes
+      .replace(/\s+/g, '-') // collapse whitespace and replace by -
+      .replace(/-+/g, '-'); // collapse dashes
 
     return str;
-}
+  }
 
   const getData = (categoryId) => {
     let url = "/products";
@@ -51,11 +51,11 @@ function ProductsPage() {
   };
 
   const getCategory = async (categoryId) => {
-    await baseService.getById("/categories", categoryId).then((data) => {
-      setCategory(data);
-      console.log("CATEGORY", category);
-    });
-  };
+    baseService.getById("/categories", categoryId)
+      .then((data) => {
+        setCategory(data);
+      })
+  }
 
   useEffect(() => {
     getCategory(id);
@@ -84,30 +84,49 @@ function ProductsPage() {
     });
 
   return (<>
-    <Container
-      disableGutters
-      maxWidth="sm"
-      component="main"
-      sx={{ pt: 8, pb: 6 }}
-    >
-      <Typography
-        component="h1"
-        variant="h2"
-        align="center"
-        color="text.primary"
-        gutterBottom
+    {
+      id ? <Container
+        disableGutters
+        maxWidth="sm"
+        component="main"
+        sx={{ pt: 8, pb: 6 }}
       >
-        {category.name}
-      </Typography>
-      <Typography
-        variant="h5"
-        align="center"
-        color="text.secondary"
-        component="p"
-      >
-        {category.description}
-      </Typography>
-    </Container>
+        <Typography
+          component="h1"
+          variant="h2"
+          align="center"
+          color="text.primary"
+          gutterBottom
+        >
+          {category.name}
+        </Typography>
+        <Typography
+          variant="h5"
+          align="center"
+          color="text.secondary"
+          component="p"
+        >
+          {category.description}
+        </Typography>
+      </Container>
+        :
+        <Container
+          disableGutters
+          maxWidth="sm"
+          component="main"
+          sx={{ pt: 8, pb: 6 }}
+        >
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            All Products
+          </Typography>
+        </Container>
+    }
 
     <Container maxWidth="md" component="main">
       <Grid container spacing={5} alignItems="flex-end">
@@ -144,7 +163,7 @@ function ProductsPage() {
                     <Typography
                       component="h5"
                       variant="h6"
-                      fontSize="1.05rem"                     
+                      fontSize="1.05rem"
                       color="text.primary"
                       textAlign="start"
                     >
