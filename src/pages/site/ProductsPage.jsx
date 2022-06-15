@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { baseService } from "../../api/baseService";
+import AllProductsPage from "./AllProductsPage";
 
 function ProductsPage() {
 
@@ -58,7 +59,9 @@ function ProductsPage() {
   }
 
   useEffect(() => {
-    getCategory(id);
+    if (id) {
+      getCategory(id);
+    }
     getData(id);
   }, []);
 
@@ -85,112 +88,100 @@ function ProductsPage() {
 
   return (<>
     {
-      id ? <Container
-        disableGutters
-        maxWidth="sm"
-        component="main"
-        sx={{ pt: 8, pb: 6 }}
-      >
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="text.primary"
-          gutterBottom
-        >
-          {category.name}
-        </Typography>
-        <Typography
-          variant="h5"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          {category.description}
-        </Typography>
-      </Container>
-        :
-        <Container
-          disableGutters
-          maxWidth="sm"
-          component="main"
-          sx={{ pt: 8, pb: 6 }}
-        >
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="text.primary"
-            gutterBottom
+      id
+        ? <>
+          <Container
+            disableGutters
+            maxWidth="sm"
+            component="main"
+            sx={{ pt: 8, pb: 6 }}
           >
-            All Products
-          </Typography>
-        </Container>
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              color="text.primary"
+              gutterBottom
+            >
+              {category.name}
+            </Typography>
+            <Typography
+              variant="h5"
+              align="center"
+              color="text.secondary"
+              component="p"
+            >
+              {category.description}
+            </Typography>
+          </Container>
+          <Container maxWidth="md" component="main">
+            <Grid container spacing={5} alignItems="flex-end">
+              {tiers.map((tier, key) => (
+                <Grid
+                  item
+                  key={key}
+                  xs={12}
+                  sm={tier.title === "Enterprise" ? 12 : 6}
+                  md={4}
+                  zeroMinWidth
+                >
+                  <Link component="button" sx={{ textDecoration: 'none' }}
+                    onClick={() => { productDetail(tier.id, tier.title) }}>
+                    <Card>
+                      <CardMedia
+                        component="img"
+                        height="194"
+                        image={tier.src}
+                        alt="Random Image"
+                      />
+                      <CardContent>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: 'column',
+                            justifyContent: "center",
+                            alignItems: "baseline",
+                            textAlign: "baseline",
+                            height: 150,
+                            width: 230,
+                          }}
+                        >
+                          <Typography
+                            component="h5"
+                            variant="h6"
+                            fontSize="1.05rem"
+                            color="text.primary"
+                            textAlign="start"
+                          >
+                            {tier.title}
+                          </Typography>
+                          <Typography
+                            component="h2"
+                            variant="h4"
+                            color="text.primary"
+                          >
+                            <b>${tier.price}</b>
+                          </Typography>
+                          <Typography
+                            component="h2"
+                            variant="h6"
+                            color="text.primary"
+                          >
+                            Stock: {tier.stock}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </>
+        : <AllProductsPage></AllProductsPage>
     }
 
-    <Container maxWidth="md" component="main">
-      <Grid container spacing={5} alignItems="flex-end">
-        {tiers.map((tier, key) => (
-          <Grid
-            item
-            key={key}
-            xs={12}
-            sm={tier.title === "Enterprise" ? 12 : 6}
-            md={4}
-            zeroMinWidth
-          >
-            <Link component="button" sx={{ textDecoration: 'none' }}
-              onClick={() => { productDetail(tier.id, tier.title) }}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  height="194"
-                  image={tier.src}
-                  alt="Random Image"
-                />
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: 'column',
-                      justifyContent: "center",
-                      alignItems: "baseline",
-                      textAlign: "baseline",
-                      height: 150,
-                      width: 230,
-                    }}
-                  >
-                    <Typography
-                      component="h5"
-                      variant="h6"
-                      fontSize="1.05rem"
-                      color="text.primary"
-                      textAlign="start"
-                    >
-                      {tier.title}
-                    </Typography>
-                    <Typography
-                      component="h2"
-                      variant="h4"
-                      color="text.primary"
-                    >
-                      <b>${tier.price}</b>
-                    </Typography>
-                    <Typography
-                      component="h2"
-                      variant="h6"
-                      color="text.primary"
-                    >
-                      Stock: {tier.stock}
-                    </Typography>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Link>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+
   </>);
 }
 
