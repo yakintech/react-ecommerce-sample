@@ -13,6 +13,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { baseService } from "../../api/baseService";
 import AllProductsPage from "./AllProductsPage";
+import "./index.css"
+
 
 function ProductsPage() {
 
@@ -86,10 +88,10 @@ function ProductsPage() {
       };
     });
 
-  return (<>
-    {
-      id
-        ? <>
+  return (
+    <>
+      {id ? (
+        <>
           <Container
             disableGutters
             maxWidth="sm"
@@ -125,10 +127,16 @@ function ProductsPage() {
                   md={4}
                   zeroMinWidth
                 >
-                  <Link component="button" sx={{ textDecoration: 'none' }}
-                    onClick={() => { productDetail(tier.id, tier.title) }}>
-                    <Card>
+                  <Link
+                    component="button"
+                    sx={{ textDecoration: "none" }}
+                    onClick={() => {
+                      productDetail(tier.id, tier.title);
+                    }}
+                  >
+                    <Card className="card">
                       <CardMedia
+                        className="cardimg"
                         component="img"
                         height="194"
                         image={tier.src}
@@ -138,7 +146,7 @@ function ProductsPage() {
                         <Box
                           sx={{
                             display: "flex",
-                            flexDirection: 'column',
+                            flexDirection: "column",
                             justifyContent: "center",
                             alignItems: "baseline",
                             textAlign: "baseline",
@@ -178,11 +186,11 @@ function ProductsPage() {
             </Grid>
           </Container>
         </>
-        : <AllProductsPage></AllProductsPage>
-    }
-
-
-  </>);
+      ) : (
+        <AllProductsPage></AllProductsPage>
+      )}
+    </>
+  );
 }
 
 export default ProductsPage;

@@ -1,0 +1,15 @@
+
+
+
+.card {
+  
+  box-shadow: 0px 3px 8px #000;
+ 
+}
+.card:hover {
+  box-shadow: 0px 10px 40px #222;
+}
+.cardimg {
+  padding: 5px;
+  border-radius: 1rem;
+}
