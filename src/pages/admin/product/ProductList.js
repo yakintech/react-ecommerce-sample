@@ -13,16 +13,24 @@ function ProductList() {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visible, setVisible] = useState(false)
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+
   let navigate = useNavigate();
+  const searchInput = useRef(null);
+
 
   useEffect(() => {
     getData();
   }, [])
 
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
-  const searchInput = useRef(null);
+  const getData = () => {
+    baseService.getAll("/products")
+      .then((data) => {
+        setProducts(data);
+        setLoading(false)
+      })
+  }  
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -143,13 +151,7 @@ function ProductList() {
     });
   };
 
-  const getData = () => {
-    baseService.getAll("/products")
-      .then((data) => {
-        setProducts(data);
-        setLoading(false)
-      })
-  }
+
 
   const goUpdateProduct = (id) =>{
     navigate("/admin/products/update/" + id)

@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 import { Form, Input, Button, Space } from 'antd';
 import { baseService } from '../../../api/baseService';
 import { useNavigate, useParams } from 'react-router-dom';
-import { integerPropType } from '@mui/utils';
 
 
 function UpdateProduct() {
@@ -11,6 +10,10 @@ function UpdateProduct() {
     var formRef = useRef()
     const navigate = useNavigate();
 
+    useEffect(() => {
+        getProduct();
+    }, [])
+
     const getProduct = () => {
         baseService.getById("/products", id)
             .then((data) => {
@@ -18,9 +21,6 @@ function UpdateProduct() {
             })
     }
 
-    useEffect(() => {
-        getProduct();
-    }, [])
 
     const updateProduct = (item) => {
         let values = {
@@ -36,7 +36,7 @@ function UpdateProduct() {
                     navigate("/admin/products");
                 }
                 )
-        } 
+        }
 
     }
 
