@@ -1,6 +1,7 @@
 import { Box, Button, Card, CardActions, CardContent, Typography, CircularProgress, CardMedia } from '@mui/material'
 import React, { useState } from 'react'
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { baseService } from '../../api/baseService';
 
 function ProductDetail() {
@@ -9,11 +10,10 @@ function ProductDetail() {
     const [supplier, setSupplier] = useState("");
     const [loading, setLoading] = useState(true);
 
-    const id = window.sessionStorage.getItem("product");
-
+    let location = useLocation();
 
     const getProduct = async () => {
-        await baseService.getById("/products", id)
+        await baseService.getById("/products", location.state.id)
             .then((data) => {
                 setProduct(data);
                 console.log("PRODUCT", product);
@@ -52,14 +52,14 @@ function ProductDetail() {
 
                 :
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: "3rem" }}>
-                    <Card sx={{ display: 'flex', justifyContent: 'center', mt: "1rem", p: "3rem"}}>
+                    <Card sx={{ display: 'flex', justifyContent: 'center', mt: "1rem", p: "3rem" }}>
                         <Card
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'center',
                                 alignItems: 'baseline',
-                                p:"1rem"
+                                p: "1rem"
                             }}
                         >
                             <CardMedia
@@ -84,8 +84,8 @@ function ProductDetail() {
                                     {product.name}
                                 </Typography>
                                 <Typography component="h4" variant="p" color="text.primary">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br></br>Suspendisse quis mi elit. 
-                                Donec interdum et mi at elementum. 
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br></br>Suspendisse quis mi elit.
+                                    Donec interdum et mi at elementum.
                                 </Typography>
                                 <Typography component="h4" variant="h4" color="text.primary">
                                     <b>${product.unitPrice}</b>
@@ -100,18 +100,18 @@ function ProductDetail() {
                                     Company: {supplier.companyName}
                                 </Typography>
                             </Box>
-                            <CardActions sx={{display:"flex", justifyContent: "center", mt:"2rem"}}>
+                            <CardActions sx={{ display: "flex", justifyContent: "center", mt: "2rem" }}>
                                 <Button variant='outlined'>
                                     Add to Cart
                                 </Button>
                             </CardActions>
                         </CardContent>
-                        </Card>
-                    </Box>               
+                    </Card>
+                </Box>
 
         }
 
-                </>)
+    </>)
 }
 
-        export default ProductDetail
+export default ProductDetail

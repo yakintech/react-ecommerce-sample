@@ -68,8 +68,7 @@ export default function Home() {
 
     const detail = (name, id) => {
         name = stringToSlug(name);
-        navigate(`/category/${name}`)
-        window.sessionStorage.setItem("category", id)
+        navigate(`/category/${name}`, { state: { id: id } });
     }
 
     console.log('categories getdata', categories)
