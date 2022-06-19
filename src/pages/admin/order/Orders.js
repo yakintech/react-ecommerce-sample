@@ -53,15 +53,19 @@ function Orders() {
       </>,
 
       cancelText: 'Cancel',
+      
       okText: 'Delete',
 
       okType: 'danger',
+
       okButtonProps: {
         disabled: false,
       }, 
+
       style: {
         width: 600
       },
+
       onOk()  {
         console.log('OK')
         baseService.delete("/orders", id)
@@ -117,6 +121,7 @@ function Orders() {
       title: 'Order Date',
       dataIndex: 'orderDate',
       render: (orderDate) => (<p>{changeDate(orderDate)}</p>),
+      defaultSortOrder: 'descend',
     },
     {
       title: 'Required Date',
