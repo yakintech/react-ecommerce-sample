@@ -3,7 +3,7 @@ import { baseService } from '../../../api/baseService';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Table, Spin, Button, Modal } from 'antd';
 
-import OrderUpdateForm from './OrderUpdateForm'
+import OrderModal from './OrderModal'
 const { confirm } = Modal;
 
 function Orders() {
@@ -11,9 +11,8 @@ function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const sampleDate = "1996-08-30 00:00:00.000";
-
-  const dateWrite = (date) => {
+  //*------------------------------------[ CHANGE DATE ]
+  const changeDate = (date) => {
 
     var day, mounth, year;
 
@@ -23,13 +22,10 @@ function Orders() {
   
     var trMounths = new Array("Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık");
   
-    var newDate = day + " " + trMounths[Number(mounth)-1] + " " + year + " " 
-
-    return newDate;
-
+    return day + " " + trMounths[Number(mounth)-1] + " " + year + " ";
   }
 
-  //console.log('DATE: ', dateWrite(sampleDate))
+  //console.log('DATE: ', orders.orderDate)
   
   //*------------------------------------[ SERVICES ]
 
@@ -38,14 +34,11 @@ function Orders() {
       .then((data) => {
         setOrders(data);
         setLoading(false);
-        
       })
   }
 
   useEffect(() => {
-
     getData();
-
   }, []);
 
   //*-----------------------------------[ CONFIRM ]
@@ -56,7 +49,7 @@ function Orders() {
       icon: <ExclamationCircleOutlined />,
       content: 
       <>
-        <OrderUpdateForm orders={orders} id={id}/>
+        <OrderModal orders={orders} id={id}/>
       </>,
 
       cancelText: 'Cancel',
@@ -118,19 +111,23 @@ function Orders() {
     {
       title: 'Ship Name',
       dataIndex: 'shipName',
+      sorter: (a, b) => a.shipName.localeCompare(b.shipName),
     },
     {
       title: 'Order Date',
       dataIndex: 'orderDate',
-      editable: true,
+      render: (orderDate) => (<p>{changeDate(orderDate)}</p>),
     },
     {
       title: 'Required Date',
       dataIndex: 'requiredDate',
+      render: (requiredDate) => (<p>{changeDate(requiredDate)}</p>)
+
     },
     {
       title: 'Shipped Date',
       dataIndex: 'shippedDate',
+      render: (shippedDate) => (<p>{changeDate(shippedDate)}</p>)
     },
     {
       title: 'Order Delete',
@@ -146,7 +143,6 @@ function Orders() {
 
 
   return (<>
-
         <Spin tip="Loading..." spinning={loading}>
             <Table columns={columns} dataSource={orders} rowKey="id"></Table> 
         </Spin>
