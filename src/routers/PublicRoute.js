@@ -6,6 +6,7 @@ import SiteHeader from '../pages/site/layout/SiteHeader'
 import HomePage from '../pages/site/HomePage'
 import ProductsPage from '../pages/site/ProductsPage'
 import ProductDetail from '../pages/site/ProductDetail'
+import Orders from '../pages/admin/order/Orders'
 
 function PublicRoute() {
     return (<>
@@ -17,6 +18,7 @@ function PublicRoute() {
             <Route path="/category/:name" element={<ProductsPage />} />
             <Route path="/product/:name" element={<ProductDetail />} />
             <Route path="/products" element={<ProductsPage />} />
+            <Route path="/orders" element={<Orders />} />
         </Routes>
         <SiteFooter></SiteFooter>
     </>)

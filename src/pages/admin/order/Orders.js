@@ -3,11 +3,11 @@ import { baseService } from '../../../api/baseService';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Table, Spin, Button, Modal } from 'antd';
 
-import OrderModal from './OrderModal'
+import OrderUpdate from './OrderUpdate'
 const { confirm } = Modal;
 
 function Orders() {
-
+  
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +26,7 @@ function Orders() {
   }
 
   //console.log('DATE: ', orders.orderDate)
-  
+
   //*------------------------------------[ SERVICES ]
 
   const getData = () => {
@@ -47,36 +47,27 @@ function Orders() {
     confirm({
       title: <h3><b>Order ID:</b> {id}</h3>,
       icon: <ExclamationCircleOutlined />,
-      content: 
-      <>
-        <OrderModal orders={orders} id={id}/>
+      content:<>
+        <OrderUpdate orders={orders} id={id} getData={getData} />
       </>,
-
       cancelText: 'Cancel',
-      
-      okText: 'Delete',
-
-      okType: 'danger',
-
+      okText: 'Update',
+      okType: 'ghost',
       okButtonProps: {
-        disabled: false,
+        form:'orderForm', 
+        key: 'submit',
+        htmlType: 'submit'
       }, 
-
       style: {
         width: 600
       },
-
-      onOk()  {
-        console.log('OK')
-        baseService.delete("/orders", id)
-          .then(() => {
-            getData();
-          })
-      },
-  
+      onOk() {
+      },  
       onCancel() {
         console.log('Cancel');
       },
+
+
     });
   };
 
@@ -96,11 +87,20 @@ function Orders() {
           .then(() => {
             getData();
           })
+        success();
       },
   
       onCancel() {
         console.log('Cancel');
       },
+    });
+  };
+
+
+  //*------------------------------------[ SUCCESS ]
+  const success = () => {
+    Modal.success({
+      content: 'Delete Success!',
     });
   };
 
@@ -121,17 +121,17 @@ function Orders() {
       title: 'Order Date',
       dataIndex: 'orderDate',
       render: (orderDate) => (<p>{changeDate(orderDate)}</p>),
+      sorter: (a, b) => a.orderDate.localeCompare(b.orderDate),
       defaultSortOrder: 'descend',
     },
     {
       title: 'Required Date',
       dataIndex: 'requiredDate',
       render: (requiredDate) => (<p>{changeDate(requiredDate)}</p>)
-
     },
     {
       title: 'Shipped Date',
-      dataIndex: 'shippedDate',
+      dataIndex: 'shippedDate', 
       render: (shippedDate) => (<p>{changeDate(shippedDate)}</p>)
     },
     {
@@ -142,7 +142,7 @@ function Orders() {
     {
       title: 'Order Detail',
       dataIndex: 'id',
-      render: (id) => (<Button onClick={() => {showPropsConfirm(id)}  }> Show Detail </Button>)
+      render: (id) => (<Button onClick={() => {showPropsConfirm(id)}} type="primary" ghost> Show Detail </Button>)
     },
   ] 
 
